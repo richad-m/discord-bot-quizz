@@ -1,9 +1,9 @@
 import discord
-import os
 import help
 import quizz
+import secret
 
-my_secret = os.environ['BOT_TOKEN']
+my_secret = secret.BOT_TOKEN
 
 client = discord.Client()
 
@@ -22,12 +22,14 @@ async def on_message(message):
         return
 
     if message.content == "!quizz":
+        # Activate 'guess the song' mode
         chosen_song = quizz.pick_random_song(quizz.DB)
         await quizz.ask_the_title(message, chosen_song)
         attempted_answer = await client.wait_for('message')
         await quizz.check_answer(attempted_answer, chosen_song, 'title')
 
     if message.content == "!quizzz":
+        # Activate 'guess the missing word mode'
         chosen_song = quizz.pick_random_song(quizz.DB)
         sentence = quizz.hole_in_sentence(chosen_song['phrase'])
         await quizz.ask_missing_word(message, sentence)

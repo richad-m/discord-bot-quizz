@@ -2,14 +2,15 @@ import gspread
 import random
 import trim
 import re
+import secret
 
 # Retrieve credentials to access GSheet
-from client_secret import CREDENTIALS
+# from client_secret import CREDENTIALS
 
 # Passing credentials via gspread
-gc = gspread.service_account_from_dict(CREDENTIALS)
+gc = gspread.service_account_from_dict(secret.CREDENTIALS)
 # Selecting the spreadsheet to open
-sh = gc.open_by_key("1Ws91wWUhnpCXnV8Wpdwrr5vnd5Coio5kw1cQ8FOVDHc")
+sh = gc.open_by_key(secret.gsheet_key)
 booba_database = sh.sheet1
 
 # Retrieving data from the spreadsheet in one variable, ONE TIME
