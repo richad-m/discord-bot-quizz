@@ -4,11 +4,9 @@ import trim
 import re
 import secret
 
-# Retrieve credentials to access GSheet
-# from client_secret import CREDENTIALS
-
 # Passing credentials via gspread
 gc = gspread.service_account_from_dict(secret.CREDENTIALS)
+
 # Selecting the spreadsheet to open
 sh = gc.open_by_key(secret.gsheet_key)
 booba_database = sh.sheet1
@@ -18,7 +16,7 @@ DB = booba_database.get_all_values()
 
 
 def pick_random_song(db):
-    # Picks random song out of a DB
+    # Picks random song out of a DB and returns it at a dict
     random_punchline_row = random.sample(db, 1)[0]
     chosen_song = {
         'artist': random_punchline_row[1],
@@ -31,11 +29,13 @@ def pick_random_song(db):
 
 
 def hole_in_sentence(string):
-    # Returns an with a random word replaced by ******, and the missing word
+  # Returns an with a random word replaced by ____, and the missing word, as a dict
+    # Selecting all the words from the string
     string_list = re.findall("\w*", string)
+    word_length = 4
     words = []
     for word in string_list:
-        if len(word) > 4:
+        if len(word) > word_length:
             words.append(word)
     word_to_replace = random.sample(words, 1)[0]
     holed_sentence = string.replace(word_to_replace, '______')
@@ -44,13 +44,13 @@ def hole_in_sentence(string):
 
 
 async def ask_missing_word(message, sentence):
-    # Game function asks to guess the missing word in a phrase
+  # Game function asks to guess the missing word in a phrase
     await message.channel.send(":pirate_flag: Welcome to Booba Quizz :pirate_flag: !\n\n")
     await message.channel.send("What's the missing word in this sentence ? :musical_note:\n **>>> {} **\n\n Please answer below :point_down:".format(sentence['sentence']))
 
 
 async def ask_the_title(message, chosen_song):
-    # Game function to guess title of the song retrieved from spreadsheet
+  # Game function to guess title of the song retrieved from spreadsheet
     await message.channel.send(":pirate_flag: Welcome to Booba Quizz :pirate_flag: !\n\n")
     await message.channel.send("In which song can we find this phrase? :musical_note:\n **>>> {} **\n\n Please answer below :point_down:".format(chosen_song['phrase']))
 
