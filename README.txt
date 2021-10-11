@@ -11,3 +11,4 @@ Welcome to Booba quizz.
 • !quizz : guess the song related to the given sentence 
 • !quizzz : guess the missing word
 
+This bot was developed using gspread to access the google sheet information and, of course, the discord.py module.
